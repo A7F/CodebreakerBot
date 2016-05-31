@@ -1,4 +1,4 @@
-local bot, extension = require("lua-bot-api").configure('YOUR TOKEN HERE')
+local bot, extension = require("lua-bot-api").configure('198578805:AAGCFjbfFEeISEnmU7uSlz5ruanhN2R6Pk0')
 
 
 local function disp_rules()
@@ -328,6 +328,7 @@ extension.onTextReceive = function(msg)
     if (msg.text=="/rules") then
         local output = disp_rules()
         bot.sendMessage(msg.chat.id,output)
+        return
     end
     
     if (msg.text=="/init") then
@@ -336,6 +337,7 @@ extension.onTextReceive = function(msg)
         else
             bot.sendMessage(msg.chat.id,"this group is already added")
         end
+        return
     end
 
     if (msg.text=="/newgame") then
@@ -376,6 +378,7 @@ extension.onTextReceive = function(msg)
     if (msg.text=="/info") then
         local text=get_game_info(msg.chat.id)
         bot.sendMessage(msg.chat.id,text)
+        return
     end
     
     if (msg.text=="/turns") then
@@ -384,30 +387,39 @@ extension.onTextReceive = function(msg)
         local m_attempts = configs[tostring(msg.chat.id)].max_attempts
         local output="You are playing turn: "..attpts.."/"..m_attempts
         bot.sendMessage(msg.chat.id,output)
+        return
     end
     
     if (msg.text=="/score") then
         local configs = load_data("./data/breakconfig.json")
+        if not configs[tostring(msg.chat.id)] then
+            local output = "First you need to add you to my database!"
+            return
+        end
         local Hpts = configs[tostring(msg.chat.id)].humans
         local Bpts = configs[tostring(msg.chat.id)].bot
         local output = "BOT: "..Bpts.."\nYOU: "..Hpts
         bot.sendMessage(msg.chat.id,output)
+        return
     end
     
     if (msg.text=="/about") then
         local output = get_bot_about()
         bot.sendMessage(msg.chat.id,output)
+        return
     end
     
     if matches1[1] == "level" and tonumber(matches1[2]) then
         local lvl = tonumber(matches1[2])
         local output = set_level(msg.chat.id,lvl)
         bot.sendMessage(msg.chat.id,output)
+        return
     end
             
     if (msg.text == "/commands") then
         local output = get_bot_commands()
         bot.sendMessage(msg.chat.id,output)
+        return
     end
         
 end
