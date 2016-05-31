@@ -1,4 +1,4 @@
-local bot, extension = require("lua-bot-api").configure('198578805:AAGCFjbfFEeISEnmU7uSlz5ruanhN2R6Pk0')
+local bot, extension = require("lua-bot-api").configure('YOUR TOKEN HERE')
 
 
 local function disp_rules()
